@@ -30,12 +30,21 @@
     "./*.js",
     "./dist/"
   ],
+  "type": "module",
   "main": "./dist/rpc.js",
   "typings": "./dist/rpc.d.ts",
   "exports": {
+    "./client.js": {
+      "types": "./dist/client.js",
+      "default": "./dist/client.d.ts"
+    },
+    "./server.js": {
+      "types": "./dist/server.js",
+      "default": "./dist/server.d.ts"
+    },
     ".": {
-      "types": "./dist/rpc.js",
-      "default": "./dist/rpc.d.ts"
+      "types": "./dist/index.js",
+      "default": "./dist/index.d.ts"
     }
   },
   "repository": {
