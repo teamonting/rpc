@@ -31,8 +31,8 @@
     "./dist/"
   ],
   "type": "module",
-  "main": "./dist/rpc.js",
-  "typings": "./dist/rpc.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "exports": {
     "./client.js": {
       "types": "./dist/client.js",
