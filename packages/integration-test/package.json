@@ -34,6 +34,7 @@
   },
   "author": "William Wong (https://github.com/compulim)",
   "devDependencies": {
+    "@happy-dom/global-registrator": "^20.10.3",
     "@onting/common": "^0.0.0-0",
     "@tsconfig/strictest": "^2.0.8",
     "expect": "^30.4.1",
@@ -41,5 +42,9 @@
     "typescript": "^6.0.3"
   },
   "license": "MIT",
-  "pinDependencies": {}
+  "pinDependencies": {},
+  "dependencies": {
+    "@onting/rpc": "^0.0.0-0",
+    "@onting/test-harness": "^0.0.0-0"
+  }
 }
