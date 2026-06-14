@@ -32,7 +32,12 @@ scenario(
       .and(
         'a server stub',
         precondition => {
-          const teardown = listen(precondition.declaration, {} as any, precondition.messageChannel.port1);
+          const teardown = listen(
+            precondition.declaration,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            {} as any,
+            precondition.messageChannel.port1
+          );
 
           return { ...precondition, teardown };
         },

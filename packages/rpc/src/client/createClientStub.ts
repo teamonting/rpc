@@ -4,7 +4,7 @@ import type { InferHandshake } from '../types/internal/InferHandshake.ts';
 import type { StubDeclaration } from '../types/StubDeclaration.ts';
 import type { StubImplementation } from '../types/StubImplementation.ts';
 
-function lazyStub<TArgs extends unknown[], TSyncReturn extends unknown>(
+function lazyStub<TArgs extends unknown[], TSyncReturn>(
   fnFactory: () => Promise<(...args: TArgs) => Promise<TSyncReturn>>
 ): (...args: TArgs) => Promise<TSyncReturn> {
   let fnPromise: Promise<(...args: TArgs) => Promise<TSyncReturn>> | undefined;
