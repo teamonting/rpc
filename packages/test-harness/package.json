@@ -1,5 +1,5 @@
 {
-  "name": "@compulim/test-harness",
+  "name": "@onting/test-harness",
   "version": "0.0.0-0",
   "description": "",
   "private": true,
@@ -36,6 +36,6 @@
     "typescript": ">=5"
   },
   "localPeerDependencies": {
-    "@compulim/common": "0.0.0-0"
+    "@onting/common": "0.0.0-0"
   }
 }
