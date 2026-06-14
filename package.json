@@ -1,5 +1,5 @@
 {
-  "name": "@onting/root",
+  "name": "@compulim/root",
   "version": "0.1.0-0",
   "private": true,
   "scripts": {
@@ -11,7 +11,8 @@
     "bump:prod": "PACKAGES_TO_BUMP=$(cat package.json | jq -r '(.pinDependencies // {}) as $P | (.localPeerDependencies // {}) as $L | (.dependencies // {}) | to_entries | map(select(.key as $K | $L | has($K) | not)) | map(.key + \"@\" + ($P[.key] // [\"latest\"])[0]) | join(\" \")') && [ ! -z \"$PACKAGES_TO_BUMP\" ] && npm install $PACKAGES_TO_BUMP || true",
     "postscaffold": "npm run postscaffold:npm-install && npm run postscaffold:eslint-react --if-present && npm run postscaffold --if-present --workspaces",
     "postscaffold:eslint-react": "npm run bump:eslintrc",
-    "postscaffold:npm-install": "npm install --save-dev @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks prettier",
+    "postscaffold:npm-install": "npm run postscaffold:npm-install:dev --if-present && npm run postscaffold:npm-install:prod --if-present",
+    "postscaffold:npm-install:dev": "npm install --save-dev @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-import-resolver-node eslint-import-resolver-typescript eslint-plugin-import eslint-plugin-prettier eslint-plugin-react eslint-plugin-react-hooks prettier",
     "precommit": "npm run precommit --if-present --workspaces",
     "switch:_": "npm run --if-present --workspaces switch && npm install --legacy-peer-deps --prefer-dedupe",
     "switch:react-16": "SWITCH_NAME=react-16 npm run switch:_",
@@ -21,8 +22,17 @@
   },
   "workspaces": [
     "packages/common",
+    "packages/test-harness",
     "packages/rpc",
-    "packages/pages",
-    "packages/integration-test"
-  ]
+    "packages/integration-test",
+    "packages/pages"
+  ],
+  "author": "William Wong (https://github.com/compulim)",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "exports": {},
+  "localPeerDependencies": {},
+  "pinDependencies": {},
+  "peerDependencies": {}
 }
