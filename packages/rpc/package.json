@@ -1,0 +1,9 @@
+{
+  "name": "@onting/rpc",
+  "version": "0.0.0-0",
+  "description": "",
+  "scripts": {
+    "init": "npm run init:dev --if-present && npm run init:prod --if-present",
+    "init:dev": "npm install --save-dev @onting/common@0.0.0-0 @happy-dom/global-registrator @testduet/given-when-then @tsconfig/recommended @tsconfig/strictest @types/node esbuild escape-string-regexp expect prettier publint tsup typescript"
+  }
+}
