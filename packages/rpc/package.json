@@ -2,6 +2,9 @@
   "name": "@onting/rpc",
   "version": "0.0.0-0",
   "description": "",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup",
     "bump": "npm run bump:prod && npm run bump:dev",
@@ -27,12 +30,21 @@
     "./*.js",
     "./dist/"
   ],
-  "main": "./dist/rpc.js",
-  "typings": "./dist/rpc.d.ts",
+  "type": "module",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "exports": {
+    "./client.js": {
+      "types": "./dist/client.js",
+      "default": "./dist/client.d.ts"
+    },
+    "./server.js": {
+      "types": "./dist/server.js",
+      "default": "./dist/server.d.ts"
+    },
     ".": {
-      "types": "./dist/rpc.js",
-      "default": "./dist/rpc.d.ts"
+      "types": "./dist/index.js",
+      "default": "./dist/index.d.ts"
     }
   },
   "repository": {
@@ -56,6 +68,7 @@
     "@tsconfig/recommended": "^1.0.13",
     "@tsconfig/strictest": "^2.0.8",
     "@types/node": "^25.9.3",
+    "@types/selenium-webdriver": "^4.35.6",
     "esbuild": "^0.28.1",
     "escape-string-regexp": "^5.0.0",
     "expect": "^30.4.1",
@@ -65,5 +78,8 @@
     "typescript": "^6.0.3"
   },
   "license": "MIT",
-  "pinDependencies": {}
+  "pinDependencies": {},
+  "dependencies": {
+    "message-port-rpc": "^3.0.1"
+  }
 }

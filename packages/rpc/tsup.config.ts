@@ -1,23 +1,35 @@
-import { defineConfig, type Options } from 'tsup';
-import overrideConfig from './tsup.config.override.ts';
+import { defineConfig } from 'tsup';
 
-const baseConfig: Options = {
-  dts: true,
-  entry: {
-    'rpc': './src/index.ts'
-  },
-  sourcemap: true
-};
+const CLIENT_TARGET = ['chrome148'];
+const SERVER_TARGET = ['node24'];
 
 export default defineConfig([
-  overrideConfig({
-    ...baseConfig,
-    format: ['esm'],
-    target: 'esnext'
-  }),
-  overrideConfig({
-    ...baseConfig,
-    format: ['cjs'],
-    target: 'es2019' // For compatibility with Webpack 4.
-  })
+  {
+    dts: true,
+    entry: {
+      client: './src/client/index.ts'
+    },
+    format: 'esm',
+    noExternal: ['message-port-rpc'],
+    sourcemap: true,
+    target: CLIENT_TARGET
+  },
+  {
+    dts: true,
+    entry: {
+      server: './src/server/index.ts'
+    },
+    format: 'esm',
+    sourcemap: true,
+    target: SERVER_TARGET
+  },
+  {
+    dts: true,
+    entry: {
+      index: './src/index.ts'
+    },
+    format: 'esm',
+    sourcemap: true,
+    target: [...CLIENT_TARGET, ...SERVER_TARGET]
+  }
 ]);
