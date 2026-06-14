@@ -37,17 +37,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/compulim/rpc.git"
+    "url": "https://github.com/teamonting/rpc.git"
   },
   "bugs": {
-    "url": "https://github.com/compulim/rpc/issues"
+    "url": "https://github.com/teamonting/rpc/issues"
   },
-  "homepage": "https://github.com/compulim/rpc#readme",
+  "homepage": "https://github.com/teamonting/rpc#readme",
   "localPeerDependencies": {
-    "@compulim/common": "0.0.0-0",
-    "@compulim/test-harness": "0.0.0-0"
+    "@onting/common": "0.0.0-0",
+    "@onting/test-harness": "0.0.0-0"
   },
-  "author": "William Wong (https://github.com/compulim)",
+  "author": "William Wong (https://github.com/teamonting)",
   "devDependencies": {
     "@happy-dom/global-registrator": "^20.10.3",
     "@onting/common": "^0.0.0-0",
