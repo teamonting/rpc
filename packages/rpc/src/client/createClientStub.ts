@@ -12,8 +12,8 @@ function lazyStub<TArgs extends unknown[], TSyncReturn>(
   return async (...args) => (await (fnPromise ?? (fnPromise = fnFactory())))(...args);
 }
 
-function createClientStub<T extends StubDeclaration<S>, S extends StubImplementation>(
-  declaration: Pick<T, 'keys'>,
+function createClientStub<S extends StubImplementation>(
+  declaration: StubDeclaration<S>,
   messagePort: MessagePort
 ): InferClient<S> {
   type Handshake = InferHandshake<S>;
