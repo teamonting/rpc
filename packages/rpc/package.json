@@ -2,6 +2,9 @@
   "name": "@onting/rpc",
   "version": "0.0.0-0",
   "description": "",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup",
     "bump": "npm run bump:prod && npm run bump:dev",
