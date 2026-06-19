@@ -12,6 +12,9 @@ function lazyStub<TArgs extends unknown[], TSyncReturn>(
   return async (...args) => (await (fnPromise ?? (fnPromise = fnFactory())))(...args);
 }
 
+const CROSS = '❌';
+const TICK = '✔️';
+
 function createClientStub<S extends StubImplementation>(
   declaration: StubDeclaration<S>,
   messagePort: MessagePort
@@ -19,12 +22,46 @@ function createClientStub<S extends StubImplementation>(
   type Handshake = InferHandshake<S>;
 
   const clientStubMap = new Map<keyof S, (...args: unknown[]) => Promise<unknown>>();
+
   const handshakePromise = rpc<() => Handshake>(messagePort)();
+
+  (async () => {
+    const serverKeys = new Set(Object.keys(await handshakePromise));
+    const clientKeys = new Set(Array.from(declaration.keys).map(key => key.toString()));
+
+    if (clientKeys.symmetricDifference(serverKeys).size) {
+      console.warn(
+        '%cONTING%c Client and server stub mismatch',
+        'background-color: green; border-radius: 4px; color: white; font-size: 125%; font-weight: bold; padding: .1em .3em 0;',
+        ''
+      );
+
+      const data = [];
+
+      for (const key of Array.from(clientKeys.union(serverKeys)).sort()) {
+        data.push({
+          client: clientKeys.has(key) ? TICK : CROSS,
+          key,
+          server: serverKeys.has(key) ? TICK : CROSS
+        });
+      }
+
+      console.table(data, ['key', 'client', 'server']);
+    }
+  })();
 
   for (const key of declaration.keys) {
     clientStubMap.set(
       key,
-      lazyStub(async () => rpc((await handshakePromise)[key]))
+      lazyStub(async () => {
+        const messagePort = (await handshakePromise)[key];
+
+        if (!messagePort) {
+          throw new Error(`Server stub does not has function named "${key.toString()}"`);
+        }
+
+        return rpc(messagePort);
+      })
     );
   }
 
