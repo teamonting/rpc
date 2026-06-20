@@ -13,13 +13,23 @@ function lazyStub<TArgs extends unknown[], TSyncReturn>(
 }
 
 const CROSS = '❌';
+const PASSTHRU_FN = (value: unknown): unknown => value;
 const TICK = '✔️';
 
 function createClientStub<S extends StubImplementation>(
   declaration: StubDeclaration<S>,
-  messagePort: MessagePort
+  messagePort: MessagePort,
+  init?:
+    | {
+        readonly marshal?: ((value: unknown) => unknown) | undefined;
+        readonly unmarshal?: ((value: unknown) => unknown) | undefined;
+      }
+    | undefined
 ): InferClient<S> {
   type Handshake = InferHandshake<S>;
+
+  const marshal = init?.marshal ?? PASSTHRU_FN;
+  const unmarshal = init?.unmarshal ?? PASSTHRU_FN;
 
   const clientStubMap = new Map<keyof S, (...args: unknown[]) => Promise<unknown>>();
 
@@ -60,7 +70,8 @@ function createClientStub<S extends StubImplementation>(
           throw new Error(`Server stub does not has function named "${key.toString()}"`);
         }
 
-        return rpc(messagePort);
+        return async (...args: unknown[]): Promise<unknown> =>
+          await unmarshal(await rpc(messagePort)(...(await Promise.all(args.map(marshal)))));
       })
     );
   }

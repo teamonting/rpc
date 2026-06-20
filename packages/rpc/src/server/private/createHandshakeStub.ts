@@ -5,7 +5,14 @@ import type { StubImplementation } from '../../types/StubImplementation.ts';
 
 function createHandshakeStub<T extends StubDeclaration<S>, S extends StubImplementation>(
   declaration: T,
-  implementation: S
+  implementation: S,
+  {
+    marshal,
+    unmarshal
+  }: {
+    readonly marshal: (value: unknown) => unknown;
+    readonly unmarshal: (value: unknown) => unknown;
+  }
 ): {
   readonly fn: () => InferHandshake<S>;
   readonly teardown: () => void;
@@ -24,7 +31,7 @@ function createHandshakeStub<T extends StubDeclaration<S>, S extends StubImpleme
         if (value) {
           const { port1, port2 } = new MessageChannel();
 
-          rpc(port1, value);
+          rpc(port1, async (...args) => await marshal(await value(...(await Promise.all(args.map(unmarshal))))));
           handshakeResultMap.set(key, port2);
 
           openedPorts.add(port1);
