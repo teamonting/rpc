@@ -5,6 +5,10 @@ import { createClientStub } from './client/index.ts';
 import { listen } from './server/index.ts';
 import type { StubImplementation } from './types/StubImplementation.ts';
 
+type Stub = {
+  hello: (aloha: string) => string;
+};
+
 scenario(
   'simple',
   bdd => {
@@ -16,7 +20,7 @@ scenario(
             implement() {
               return { hello: (_aloha: string) => 'World!' };
             }
-          } satisfies StubImplementation<{ hello: (aloha: string) => string }>
+          } satisfies StubImplementation<Stub>
         };
       })
       .and(
@@ -70,7 +74,7 @@ scenario(
       .and('a client stub', precondition => {
         return {
           ...precondition,
-          clientStub: createClientStub(
+          clientStub: createClientStub<Stub>(
             precondition.declaration,
             precondition.messageChannel.port2,
             precondition.marshaller
