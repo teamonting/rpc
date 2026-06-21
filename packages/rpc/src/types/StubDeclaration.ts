@@ -1,10 +1,7 @@
-import type { StubEnvironment } from './StubEnvironment.ts';
-import type { StubImplementation } from './StubImplementation.ts';
+import type { Stub } from './Stub.ts';
 
-type StubDeclaration<T extends StubImplementation> = {
+type StubDeclaration<T extends Stub> = {
   readonly keys: readonly (keyof T)[];
-
-  implement(environment: StubEnvironment): T;
 };
 
 export type { StubDeclaration };
