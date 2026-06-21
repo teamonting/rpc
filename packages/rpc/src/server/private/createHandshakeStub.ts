@@ -1,9 +1,9 @@
 import { messagePortRPC as rpc } from 'message-port-rpc';
 import type { InferHandshake } from '../../types/internal/InferHandshake.ts';
+import type { Stub } from '../../types/Stub.ts';
 import type { StubDeclaration } from '../../types/StubDeclaration.ts';
-import type { StubImplementation } from '../../types/StubImplementation.ts';
 
-function createHandshakeStub<T extends StubDeclaration<S>, S extends StubImplementation>(
+function createHandshakeStub<T extends StubDeclaration<S>, S extends Stub>(
   declaration: T,
   implementation: S,
   {

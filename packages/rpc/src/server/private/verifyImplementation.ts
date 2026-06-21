@@ -1,10 +1,7 @@
+import type { Stub } from '../../types/Stub';
 import type { StubDeclaration } from '../../types/StubDeclaration';
-import type { StubImplementation } from '../../types/StubImplementation';
 
-function verifyImplementation<T extends StubDeclaration<S>, S extends StubImplementation>(
-  declaration: T,
-  implementation: S
-) {
+function verifyImplementation<T extends StubDeclaration<S>, S extends Stub>(declaration: T, implementation: S) {
   const declaredKeySet = new Set(declaration.keys);
   const implementedKeySet = new Set(Object.getOwnPropertyNames(implementation));
 
