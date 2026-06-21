@@ -36,12 +36,14 @@ scenario(
 
             return (value as string).split('');
           },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           marshalled: [] as any[],
           unmarshal: (value: unknown): unknown => {
             marshaller.unmarshalled.push(value);
 
             return (value as string[]).join('');
           },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           unmarshalled: [] as any[]
         };
 
