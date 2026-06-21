@@ -3,7 +3,7 @@ import { expect } from 'expect';
 import * as NodeTest from 'node:test';
 import { createClientStub } from './client/index.ts';
 import { listen } from './server/index.ts';
-import type { StubDeclaration } from './types/StubDeclaration.ts';
+import type { StubImplementation } from './types/StubImplementation.ts';
 
 scenario(
   'simple',
@@ -16,7 +16,7 @@ scenario(
             implement() {
               return { hello: (_aloha: string) => 'World!' };
             }
-          } satisfies StubDeclaration<{ hello: (aloha: string) => string }>
+          } satisfies StubImplementation<{ hello: (aloha: string) => string }>
         };
       })
       .and(

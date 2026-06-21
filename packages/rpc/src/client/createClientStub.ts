@@ -1,8 +1,8 @@
 import { messagePortRPC as rpc } from 'message-port-rpc';
 import type { InferClient } from '../types/internal/InferClient.ts';
 import type { InferHandshake } from '../types/internal/InferHandshake.ts';
+import type { Stub } from '../types/Stub.ts';
 import type { StubDeclaration } from '../types/StubDeclaration.ts';
-import type { StubImplementation } from '../types/StubImplementation.ts';
 
 function lazyStub<TArgs extends unknown[], TSyncReturn>(
   fnFactory: () => Promise<(...args: TArgs) => Promise<TSyncReturn>>
@@ -16,7 +16,7 @@ const CROSS = '❌';
 const PASSTHRU_FN = (value: unknown): unknown => value;
 const TICK = '✔️';
 
-function createClientStub<S extends StubImplementation>(
+function createClientStub<S extends Stub>(
   declaration: StubDeclaration<S>,
   messagePort: MessagePort,
   init?:

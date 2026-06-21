@@ -1,4 +1,9 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type StubImplementation = Record<string, (...args: any[]) => any>;
+import type { Stub } from './Stub';
+import type { StubDeclaration } from './StubDeclaration';
+import type { StubEnvironment } from './StubEnvironment';
+
+type StubImplementation<T extends Stub> = StubDeclaration<T> & {
+  implement(environment: StubEnvironment): T;
+};
 
 export type { StubImplementation };
