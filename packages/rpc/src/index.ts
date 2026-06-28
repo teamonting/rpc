@@ -1,4 +1,5 @@
 export type { BrowsingContext } from './types/BrowsingContext.ts';
+export type { InferClient } from './types/InferClient.ts';
 export type { Stub } from './types/Stub.ts';
 export type { StubDeclaration } from './types/StubDeclaration.ts';
 export type { StubEnvironment } from './types/StubEnvironment.ts';

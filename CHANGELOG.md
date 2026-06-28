@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Exports `InferClient` helper type, in PR [#7](https://github.com/teamonting/rpc/pull/7), by [@compulim](https://github.com/compulim)
+
 ## [0.1.0] - 2026-06-21
 
 ### Added
