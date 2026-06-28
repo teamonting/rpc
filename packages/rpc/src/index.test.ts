@@ -3,7 +3,8 @@ import { expect } from 'expect';
 import * as NodeTest from 'node:test';
 import { createClientStub } from './client/index.ts';
 import { listen } from './server/index.ts';
-import type { StubImplementation } from './types/StubImplementation.ts';
+import defineImplementation from './types/defineImplementation.ts';
+import defineContract from './types/defineContract.ts';
 
 type Stub = {
   hello: (aloha: string) => string;
@@ -13,14 +14,17 @@ scenario(
   'simple',
   bdd => {
     bdd
-      .given('a stub declaration', () => {
+      .given('a stub contract', () => {
+        return { contract: defineContract<Stub>({ keys: ['hello'] }) };
+      })
+      .and('a stub implementation', precondition => {
         return {
-          declaration: {
-            keys: ['hello'],
+          ...precondition,
+          implementation: defineImplementation(precondition.contract, {
             implement() {
               return { hello: (_aloha: string) => 'World!' };
             }
-          } satisfies StubImplementation<Stub>
+          })
         };
       })
       .and(
@@ -60,7 +64,7 @@ scenario(
         'a server stub',
         precondition => {
           const teardown = listen(
-            precondition.declaration,
+            precondition.implementation,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             {} as any,
             precondition.messageChannel.port1,
@@ -74,8 +78,8 @@ scenario(
       .and('a client stub', precondition => {
         return {
           ...precondition,
-          clientStub: createClientStub<Stub>(
-            precondition.declaration,
+          clientStub: createClientStub(
+            precondition.contract,
             precondition.messageChannel.port2,
             precondition.marshaller
           )

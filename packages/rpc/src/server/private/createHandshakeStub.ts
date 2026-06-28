@@ -1,11 +1,12 @@
 import { messagePortRPC as rpc } from 'message-port-rpc';
+import type { InferStub } from '../../types/InferStub.ts';
 import type { InferHandshake } from '../../types/internal/InferHandshake.ts';
 import type { Stub } from '../../types/Stub.ts';
-import type { StubDeclaration } from '../../types/StubDeclaration.ts';
+import type { StubContract } from '../../types/StubContract.ts';
 
-function createHandshakeStub<T extends StubDeclaration<S>, S extends Stub>(
-  declaration: T,
-  implementation: S,
+function createHandshakeStub<T extends StubContract<S>, S extends Stub>(
+  contract: T,
+  instance: S,
   {
     marshal,
     unmarshal
@@ -14,18 +15,18 @@ function createHandshakeStub<T extends StubDeclaration<S>, S extends Stub>(
     readonly unmarshal: (value: unknown) => unknown;
   }
 ): {
-  readonly fn: () => InferHandshake<S>;
+  readonly fn: () => InferHandshake<T>;
   readonly teardown: () => void;
 } {
   const openedPorts = new Set<MessagePort>();
 
   return {
     fn() {
-      const handshakeResultMap = new Map<keyof S, MessagePort>();
+      const handshakeResultMap = new Map<keyof InferStub<T>, MessagePort>();
 
-      // Prefer StubDeclaration.keys over Object.getOwnPropertyNames(stubDeclaration).
-      for (const key of declaration.keys) {
-        const value = implementation[key];
+      // Prefer StubContract.keys over Object.getOwnPropertyNames(stubInstance).
+      for (const key of contract.keys) {
+        const value = instance[key];
 
         // We already verified the implementation in `listen()`.
         if (value) {
@@ -41,7 +42,7 @@ function createHandshakeStub<T extends StubDeclaration<S>, S extends Stub>(
       return Object.fromEntries(handshakeResultMap.entries()) satisfies Record<
         string,
         MessagePort
-      > as InferHandshake<S>;
+      > as InferHandshake<T>;
     },
     teardown() {
       for (const port of openedPorts) {
