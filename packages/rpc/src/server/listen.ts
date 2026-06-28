@@ -1,14 +1,17 @@
 import { messagePortRPC as rpc } from 'message-port-rpc';
-import type { Stub } from '../types/Stub.ts';
+import type { InferStub } from '../types/InferStub.ts';
 import type { StubEnvironment } from '../types/StubEnvironment.ts';
 import type { StubImplementation } from '../types/StubImplementation.ts';
 import createHandshakeStub from './private/createHandshakeStub.ts';
-import verifyImplementation from './private/verifyImplementation.ts';
+import verifyInstance from './private/verifyInstance.ts';
 
 const PASSTHRU_FN = (value: unknown): unknown => value;
 
-function listen<T extends StubImplementation<S>, S extends Stub>(
-  declaration: T,
+function listen<
+  T extends StubImplementation<// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  any>
+>(
+  implementation: T,
   environment: StubEnvironment,
   messagePort: MessagePort,
   init?:
@@ -20,11 +23,11 @@ function listen<T extends StubImplementation<S>, S extends Stub>(
 ): () => void {
   const marshal = init?.marshal ?? PASSTHRU_FN;
   const unmarshal = init?.unmarshal ?? PASSTHRU_FN;
-  const implementation: S = declaration.implement(environment);
+  const instance: InferStub<T> = implementation.implement(environment);
 
-  verifyImplementation(declaration, implementation);
+  verifyInstance(implementation, instance);
 
-  const { fn, teardown } = createHandshakeStub(declaration, implementation, {
+  const { fn, teardown } = createHandshakeStub(implementation, instance, {
     marshal,
     unmarshal
   });

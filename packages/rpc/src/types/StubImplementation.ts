@@ -1,8 +1,8 @@
-import type { Stub } from './Stub';
-import type { StubDeclaration } from './StubDeclaration';
-import type { StubEnvironment } from './StubEnvironment';
+import type { Stub } from './Stub.ts';
+import type { StubContract } from './StubContract.ts';
+import type { StubEnvironment } from './StubEnvironment.ts';
 
-type StubImplementation<T extends Stub> = StubDeclaration<T> & {
+type StubImplementation<T extends Stub> = StubContract<T> & {
   implement(environment: StubEnvironment): T;
 };
 

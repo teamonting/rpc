@@ -1,8 +1,8 @@
 import { messagePortRPC as rpc } from 'message-port-rpc';
 import type { InferClient } from '../types/InferClient.ts';
+import type { InferStub } from '../types/InferStub.ts';
 import type { InferHandshake } from '../types/internal/InferHandshake.ts';
-import type { Stub } from '../types/Stub.ts';
-import type { StubDeclaration } from '../types/StubDeclaration.ts';
+import type { StubContract } from '../types/StubContract.ts';
 
 function lazyStub<TArgs extends unknown[], TSyncReturn>(
   fnFactory: () => Promise<(...args: TArgs) => Promise<TSyncReturn>>
@@ -16,8 +16,11 @@ const CROSS = '❌';
 const PASSTHRU_FN = (value: unknown): unknown => value;
 const TICK = '✔️';
 
-function createClientStub<S extends Stub>(
-  declaration: StubDeclaration<S>,
+function createClientStub<
+  S extends StubContract<// eslint-disable-next-line @typescript-eslint/no-explicit-any
+  any>
+>(
+  contract: S,
   messagePort: MessagePort,
   init?:
     | {
@@ -31,13 +34,13 @@ function createClientStub<S extends Stub>(
   const marshal = init?.marshal ?? PASSTHRU_FN;
   const unmarshal = init?.unmarshal ?? PASSTHRU_FN;
 
-  const clientStubMap = new Map<keyof S, (...args: unknown[]) => Promise<unknown>>();
+  const clientStubMap = new Map<keyof InferStub<S>, (...args: unknown[]) => Promise<unknown>>();
 
   const handshakePromise = rpc<() => Handshake>(messagePort)();
 
   (async () => {
     const serverKeys = new Set(Object.keys(await handshakePromise));
-    const clientKeys = new Set(Array.from(declaration.keys).map(key => key.toString()));
+    const clientKeys = new Set(Array.from(contract.keys).map(key => key.toString()));
 
     if (clientKeys.symmetricDifference(serverKeys).size) {
       console.warn(
@@ -60,7 +63,7 @@ function createClientStub<S extends Stub>(
     }
   })();
 
-  for (const key of declaration.keys) {
+  for (const key of contract.keys) {
     clientStubMap.set(
       key,
       lazyStub(async () => {
