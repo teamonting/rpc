@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - 💥 Renamed `StubDeclaration` to `StubContract` for clarity, in PR [#8](https://github.com/teamonting/rpc/pull/8), by [@compulim](https://github.com/compulim)
+- 💥 Changed `listen()` to return `Promise`, in PR [#9](https://github.com/teamonting/rpc/pull/9), by [@compulim](https://github.com/compulim)
 
 ## [0.1.0] - 2026-06-21
 
