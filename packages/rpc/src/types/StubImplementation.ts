@@ -3,7 +3,7 @@ import type { StubContract } from './StubContract.ts';
 import type { StubEnvironment } from './StubEnvironment.ts';
 
 type StubImplementation<T extends Stub> = StubContract<T> & {
-  implement(environment: StubEnvironment): T;
+  implement(environment: StubEnvironment): Promise<T>;
 };
 
 export type { StubImplementation };

@@ -7,7 +7,7 @@ import verifyInstance from './private/verifyInstance.ts';
 
 const PASSTHRU_FN = (value: unknown): unknown => value;
 
-function listen<
+async function listen<
   T extends StubImplementation<// eslint-disable-next-line @typescript-eslint/no-explicit-any
   any>
 >(
@@ -20,10 +20,10 @@ function listen<
         readonly unmarshal?: ((value: unknown) => unknown) | undefined;
       }
     | undefined
-): () => void {
+): Promise<() => void> {
   const marshal = init?.marshal ?? PASSTHRU_FN;
   const unmarshal = init?.unmarshal ?? PASSTHRU_FN;
-  const instance: InferStub<T> = implementation.implement(environment);
+  const instance: InferStub<T> = await implementation.implement(environment);
 
   verifyInstance(implementation, instance);
 

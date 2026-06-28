@@ -21,7 +21,7 @@ scenario(
         return {
           ...precondition,
           implementation: defineImplementation(precondition.contract, {
-            implement() {
+            async implement() {
               return { hello: (_aloha: string) => 'World!' };
             }
           })
@@ -62,8 +62,8 @@ scenario(
       })
       .and(
         'a server stub',
-        precondition => {
-          const teardown = listen(
+        async precondition => {
+          const teardown = await listen(
             precondition.implementation,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             {} as any,

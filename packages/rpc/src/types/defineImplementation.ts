@@ -9,7 +9,7 @@ export default function defineImplementation<
 >(
   contract: T,
   implementation: {
-    implement(environment: StubEnvironment): InferStub<T>;
+    implement(environment: StubEnvironment): Promise<InferStub<T>>;
   }
 ): StubImplementation<InferStub<T>> {
   return {
