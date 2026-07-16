@@ -1,10 +1,10 @@
 import { messagePortRPC as rpc } from 'message-port-rpc';
+import type { AnyStub } from '../../types/AnyStub.ts';
 import type { InferStub } from '../../types/InferStub.ts';
 import type { InferHandshake } from '../../types/internal/InferHandshake.ts';
-import type { Stub } from '../../types/Stub.ts';
 import type { StubContract } from '../../types/StubContract.ts';
 
-function createHandshakeStub<T extends StubContract<S>, S extends Stub>(
+function createHandshakeStub<T extends StubContract<S>, S extends AnyStub>(
   contract: T,
   instance: S,
   {

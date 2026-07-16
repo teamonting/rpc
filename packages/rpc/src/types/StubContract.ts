@@ -1,6 +1,6 @@
-import type { Stub } from './Stub.ts';
+import type { AnyStub } from './AnyStub.ts';
 
-type StubContract<T extends Stub> = {
+type StubContract<T extends AnyStub> = {
   readonly keys: readonly (keyof T)[];
 
   ['~types']: {
