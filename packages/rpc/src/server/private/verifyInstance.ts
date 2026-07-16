@@ -1,7 +1,7 @@
-import type { Stub } from '../../types/Stub';
+import type { AnyStub } from '../../types/AnyStub';
 import type { StubContract } from '../../types/StubContract';
 
-function verifyInstance<T extends StubContract<S>, S extends Stub>(contract: T, instance: S) {
+function verifyInstance<T extends StubContract<S>, S extends AnyStub>(contract: T, instance: S) {
   const declaredKeySet = new Set(contract.keys);
   const implementedKeySet = new Set(Object.getOwnPropertyNames(instance));
 
